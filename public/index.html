@@ -1,0 +1,731 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BLACKFEATHER — Stories That Actually End</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,500;1,300;1,400&display=swap" rel="stylesheet">
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    
+    :root {
+      --black-true: #0B0B0B;
+      --black-panel: #111111;
+      --black-card: #141414;
+      --crimson-deep: #5A0A0A;
+      --crimson-button: #7A0E0E;
+      --gold-highlight: #D4AF37;
+      --gold-mid: #B8962E;
+      --gold-shadow: #8C6B1F;
+      --ember: #FF6A00;
+      --white-text: #EAEAEA;
+    }
+    
+    html { scroll-behavior: smooth; }
+    
+    body {
+      background: var(--black-true);
+      color: var(--white-text);
+      font-family: 'Cormorant Garamond', Georgia, serif;
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+    }
+    
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 1rem 1.5rem;
+      background: linear-gradient(180deg, rgba(11,11,11,0.95) 0%, rgba(11,11,11,0.7) 60%, transparent 100%);
+    }
+    
+    .nav-logo {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      text-decoration: none;
+    }
+    
+    .nav-logo img {
+      height: 36px;
+      width: auto;
+    }
+    
+    .nav-logo span {
+      font-family: 'Cinzel', serif;
+      font-size: 14px;
+      letter-spacing: 0.2em;
+      background: linear-gradient(180deg, #D4AF37 0%, #B8962E 50%, #8C6B1F 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .btn-signin {
+      font-family: 'Cinzel', serif;
+      font-size: 11px;
+      font-weight: 600;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      padding: 10px 24px;
+      background: var(--crimson-button);
+      border: 1px solid var(--gold-highlight);
+      color: var(--gold-highlight);
+      cursor: pointer;
+      transition: all 0.3s ease;
+    }
+    
+    .btn-signin:hover {
+      background: #8B1212;
+      box-shadow: 0 0 20px rgba(212, 175, 55, 0.15);
+    }
+    
+    /* ===== HERO SECTION ===== */
+    .hero {
+      position: relative;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      animation: glowPulse 6s ease-in-out infinite;
+    }
+    
+    @keyframes glowPulse {
+      0%, 100% { filter: brightness(1) saturate(1); }
+      50% { filter: brightness(1.08) saturate(1.1); }
+    }
+    
+    .hero-bg {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+    }
+    
+    .hero-bg img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+    }
+    
+    .hero-bg::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(180deg, 
+        rgba(11,11,11,0.3) 0%, 
+        rgba(11,11,11,0.1) 30%,
+        rgba(11,11,11,0.4) 60%,
+        rgba(11,11,11,0.95) 100%
+      );
+    }
+    
+    /* Ember particles floating up */
+    .embers {
+      position: absolute;
+      inset: 0;
+      z-index: 2;
+      background-image: 
+        radial-gradient(circle, rgba(255,106,0,0.9) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,140,66,0.7) 1px, transparent 1px),
+        radial-gradient(circle, rgba(255,69,0,0.8) 1px, transparent 1px);
+      background-size: 
+        80px 120px,
+        120px 160px,
+        100px 140px;
+      background-position:
+        0 0,
+        40px 60px,
+        80px 30px;
+      animation: emberFloat 18s linear infinite;
+      opacity: 0.6;
+      pointer-events: none;
+    }
+    
+    @keyframes emberFloat {
+      from { transform: translateY(0); }
+      to { transform: translateY(-300px); }
+    }
+    
+    /* Smoke drift layer */
+    .smoke {
+      position: absolute;
+      inset: -10%;
+      z-index: 1;
+      background: 
+        radial-gradient(ellipse 80% 50% at 30% 70%, rgba(90,10,10,0.15) 0%, transparent 50%),
+        radial-gradient(ellipse 60% 40% at 70% 60%, rgba(43,0,0,0.12) 0%, transparent 50%),
+        radial-gradient(ellipse 100% 60% at 50% 80%, rgba(20,5,5,0.1) 0%, transparent 40%);
+      animation: smokeMove 25s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+    
+    @keyframes smokeMove {
+      from { transform: translateX(-3%) translateY(0) scale(1); }
+      to { transform: translateX(3%) translateY(-2%) scale(1.02); }
+    }
+    
+    .hero-content {
+      position: relative;
+      z-index: 10;
+      text-align: center;
+      padding: 0 1.5rem;
+      margin-top: 15vh;
+    }
+    
+    .tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-style: italic;
+      font-size: 1.6rem;
+      color: var(--white-text);
+      opacity: 0.9;
+      letter-spacing: 0.08em;
+      margin-bottom: 0.5rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+    
+    .sub-tagline {
+      font-family: 'Cormorant Garamond', serif;
+      font-size: 1rem;
+      color: var(--gold-highlight);
+      opacity: 0.7;
+      letter-spacing: 0.15em;
+      margin-bottom: 2.5rem;
+      text-shadow: 0 2px 20px rgba(0,0,0,0.8);
+    }
+    
+    .btn-throne {
+      display: inline-block;
+      padding: 16px 48px;
+      background: var(--crimson-button);
+      border: 1px solid var(--gold-highlight);
+      color: var(--gold-highlight);
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      position: relative;
+    }
+    
+    .btn-throne::before {
+      content: '';
+      position: absolute;
+      inset: 4px;
+      border: 1px solid rgba(212, 175, 55, 0.3);
+      pointer-events: none;
+    }
+    
+    .btn-throne:hover {
+      background: #8B1212;
+      box-shadow: 0 0 30px rgba(212, 175, 55, 0.2);
+    }
+    
+    .btn-throne:active {
+      transform: scale(0.97);
+    }
+    
+    /* ===== SMOKE OVERLAY ===== */
+    .smoke-overlay {
+      position: fixed;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60vh;
+      pointer-events: none;
+      z-index: 5;
+      opacity: 0.4;
+      background: url('images/smoke-overlay.png') center bottom no-repeat;
+      background-size: cover;
+      animation: smoke-drift 15s ease-in-out infinite alternate;
+    }
+    
+    @keyframes smoke-drift {
+      0% { transform: translateX(-3%) translateY(0); }
+      100% { transform: translateX(3%) translateY(-2%); }
+    }
+    
+    /* ===== VIGNETTE ===== */
+    .vignette {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 4;
+      background: radial-gradient(ellipse at center, transparent 40%, rgba(11, 11, 11, 0.8) 100%);
+    }
+    
+    /* ===== CONTENT SECTIONS ===== */
+    .content {
+      position: relative;
+      z-index: 10;
+      background: linear-gradient(180deg, transparent 0%, var(--black-true) 5%);
+    }
+    
+    /* ===== SAGAS SECTION ===== */
+    .sagas-section {
+      padding: 4rem 1.5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .section-header {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 1.5rem;
+      margin-bottom: 3rem;
+    }
+    
+    .section-header .line {
+      flex: 1;
+      max-width: 100px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--gold-shadow), transparent);
+    }
+    
+    .section-header h2 {
+      font-family: 'Cinzel', serif;
+      font-size: 12px;
+      font-weight: 400;
+      letter-spacing: 0.35em;
+      color: var(--gold-shadow);
+      text-transform: uppercase;
+    }
+    
+    /* ===== SAGA CARD ===== */
+    .saga-card {
+      display: flex;
+      background: var(--black-panel);
+      border: 1px solid var(--gold-shadow);
+      margin-bottom: 1.5rem;
+      overflow: hidden;
+      transition: all 0.4s ease;
+      text-decoration: none;
+      color: inherit;
+    }
+    
+    .saga-card:hover {
+      border-color: var(--gold-mid);
+      box-shadow: 0 8px 40px rgba(0, 0, 0, 0.6), 0 0 40px rgba(212, 175, 55, 0.1);
+      transform: translateY(-3px);
+    }
+    
+    .saga-image {
+      width: 240px;
+      min-height: 300px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+    }
+    
+    .saga-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      transition: transform 0.6s ease, filter 0.4s ease;
+      filter: brightness(0.9);
+    }
+    
+    .saga-card:hover .saga-image img {
+      transform: scale(1.05);
+      filter: brightness(1);
+    }
+    
+    .saga-image-overlay {
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(90deg, transparent 0%, rgba(17, 17, 17, 0.5) 50%, rgba(17, 17, 17, 0.95) 100%);
+      pointer-events: none;
+    }
+    
+    .saga-content {
+      flex: 1;
+      padding: 2rem 2.5rem;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+    
+    .saga-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      margin-bottom: 1rem;
+    }
+    
+    .saga-badge img {
+      height: 18px;
+      width: auto;
+      opacity: 0.6;
+    }
+    
+    .saga-badge .complete {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.18em;
+      color: var(--gold-highlight);
+      padding: 5px 14px;
+      border: 1px solid rgba(212, 175, 55, 0.4);
+      background: rgba(212, 175, 55, 0.08);
+    }
+    
+    .saga-title {
+      font-family: 'Cinzel', serif;
+      font-size: 1.8rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      color: var(--white-text);
+      margin-bottom: 0.6rem;
+      text-transform: uppercase;
+    }
+    
+    .saga-tagline {
+      font-style: italic;
+      font-size: 1.15rem;
+      color: var(--white-text);
+      opacity: 0.6;
+      letter-spacing: 0.03em;
+      margin-bottom: 1rem;
+    }
+    
+    .saga-chapters {
+      font-size: 0.85rem;
+      color: var(--gold-highlight);
+      opacity: 0.5;
+      letter-spacing: 0.12em;
+      margin-bottom: 1.5rem;
+    }
+    
+    .btn-outline {
+      display: inline-block;
+      padding: 12px 28px;
+      background: transparent;
+      border: 1px solid var(--gold-highlight);
+      color: var(--gold-highlight);
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      font-weight: 500;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      width: fit-content;
+    }
+    
+    .btn-outline:hover {
+      background: rgba(212, 175, 55, 0.1);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.15);
+    }
+    
+    /* ===== CHAPTER ROW ===== */
+    .chapters-section {
+      padding: 2rem 1.5rem 5rem;
+      max-width: 900px;
+      margin: 0 auto;
+    }
+    
+    .chapter-row {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+      padding: 1.25rem 1.5rem;
+      background: var(--black-panel);
+      border: 1px solid rgba(90, 10, 10, 0.4);
+      margin-bottom: 0.75rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .chapter-row:hover {
+      border-color: var(--gold-shadow);
+      background: var(--black-card);
+    }
+    
+    .chapter-thumb {
+      width: 160px;
+      height: 100px;
+      position: relative;
+      flex-shrink: 0;
+      overflow: hidden;
+      border: 1px solid rgba(90, 10, 10, 0.3);
+    }
+    
+    .chapter-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center top;
+      filter: brightness(0.8);
+      transition: filter 0.3s ease;
+    }
+    
+    .chapter-row:hover .chapter-thumb img {
+      filter: brightness(1);
+    }
+    
+    .chapter-info {
+      flex: 1;
+      min-width: 0;
+    }
+    
+    .chapter-saga {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-bottom: 0.4rem;
+    }
+    
+    .chapter-saga img {
+      height: 14px;
+      width: auto;
+      opacity: 0.5;
+    }
+    
+    .chapter-saga span {
+      font-family: 'Cinzel', serif;
+      font-size: 10px;
+      letter-spacing: 0.15em;
+      color: var(--gold-highlight);
+      text-transform: uppercase;
+    }
+    
+    .chapter-title {
+      font-size: 1.15rem;
+      color: var(--white-text);
+      margin-bottom: 0.3rem;
+    }
+    
+    .chapter-meta {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+    
+    .chapter-meta .duration {
+      font-size: 0.85rem;
+      color: var(--white-text);
+      opacity: 0.4;
+    }
+    
+    .chapter-meta .free {
+      font-family: 'Cinzel', serif;
+      font-size: 9px;
+      letter-spacing: 0.12em;
+      color: var(--gold-highlight);
+      text-transform: uppercase;
+    }
+    
+    .btn-play {
+      width: 56px;
+      height: 56px;
+      border-radius: 50%;
+      background: rgba(212, 175, 55, 0.1);
+      border: 1px solid var(--gold-highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      flex-shrink: 0;
+    }
+    
+    .btn-play:hover {
+      background: rgba(212, 175, 55, 0.2);
+      box-shadow: 0 0 25px rgba(212, 175, 55, 0.25);
+    }
+    
+    .btn-play svg {
+      width: 22px;
+      height: 22px;
+      fill: var(--gold-highlight);
+      margin-left: 3px;
+    }
+    
+    /* ===== RESPONSIVE ===== */
+    @media (max-width: 768px) {
+      .saga-card {
+        flex-direction: column;
+      }
+      
+      .saga-image {
+        width: 100%;
+        min-height: 220px;
+      }
+      
+      .saga-image-overlay {
+        background: linear-gradient(180deg, transparent 30%, rgba(17, 17, 17, 0.95) 100%);
+      }
+      
+      .saga-content {
+        padding: 1.5rem;
+      }
+      
+      .saga-title {
+        font-size: 1.4rem;
+      }
+      
+      .chapter-row {
+        flex-wrap: wrap;
+        gap: 1rem;
+      }
+      
+      .chapter-thumb {
+        width: 120px;
+        height: 75px;
+      }
+      
+      .tagline {
+        font-size: 1.3rem;
+      }
+      
+      .nav-logo span {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Vignette overlay -->
+  <div class="vignette"></div>
+  
+  <!-- Smoke overlay -->
+  <div class="smoke-overlay"></div>
+  
+  <!-- Navbar -->
+  <nav class="navbar">
+    <a href="#" class="nav-logo">
+      <img src="images/logo-crest.png" alt="BLACKFEATHER crest">
+      <span>BLACKFEATHER</span>
+    </a>
+    <button class="btn-signin">Sign In</button>
+  </nav>
+  
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="hero-bg">
+      <img src="images/hero-throne.jpg" alt="The Queen on her throne">
+    </div>
+    
+    <!-- Atmospheric layers -->
+    <div class="smoke"></div>
+    <div class="embers"></div>
+    
+    <div class="hero-content">
+      <p class="tagline">Stories That Actually End</p>
+      <p class="sub-tagline">Power. Betrayal. Rebirth.</p>
+      <a href="#sagas" class="btn-throne">Enter the Throne</a>
+    </div>
+  </section>
+  
+  <!-- Content -->
+  <div class="content">
+    <!-- Sagas Section -->
+    <section id="sagas" class="sagas-section">
+      <div class="section-header">
+        <div class="line"></div>
+        <h2>Sagas</h2>
+        <div class="line"></div>
+      </div>
+      
+      <!-- The Fallen Queen -->
+      <a href="#" class="saga-card">
+        <div class="saga-image">
+          <img src="images/saga-fallen-queen.jpg" alt="The Fallen Queen">
+          <div class="saga-image-overlay"></div>
+        </div>
+        <div class="saga-content">
+          <div class="saga-badge">
+            <img src="images/logo-crest.png" alt="">
+            <span class="complete">Complete</span>
+          </div>
+          <h3 class="saga-title">The Fallen Queen</h3>
+          <p class="saga-tagline">Betrayed. Executed. Reborn.</p>
+          <p class="saga-chapters">8 Chapters</p>
+          <span class="btn-outline">Begin Her Story</span>
+        </div>
+      </a>
+      
+      <!-- The Ashen Blade -->
+      <a href="#" class="saga-card">
+        <div class="saga-image">
+          <img src="images/saga-ashen-blade.jpg" alt="The Ashen Blade">
+          <div class="saga-image-overlay"></div>
+        </div>
+        <div class="saga-content">
+          <div class="saga-badge">
+            <img src="images/logo-crest.png" alt="">
+          </div>
+          <h3 class="saga-title">The Ashen Blade</h3>
+          <p class="saga-tagline">Forged in fire. Wielded by fate.</p>
+          <p class="saga-chapters">6 Chapters</p>
+          <span class="btn-outline">Begin His Story</span>
+        </div>
+      </a>
+    </section>
+    
+    <!-- Chapters Section -->
+    <section class="chapters-section">
+      <div class="section-header">
+        <div class="line"></div>
+        <h2>Chapters</h2>
+        <div class="line"></div>
+      </div>
+      
+      <article class="chapter-row">
+        <div class="chapter-thumb">
+          <img src="images/saga-fallen-queen.jpg" alt="Chapter thumbnail">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-saga">
+            <img src="images/logo-crest.png" alt="">
+            <span>The Fallen Queen</span>
+          </div>
+          <h4 class="chapter-title">Chapter 2: Rebirth</h4>
+          <div class="chapter-meta">
+            <span class="duration">3:24</span>
+            <span class="free">Free</span>
+          </div>
+        </div>
+        <button class="btn-play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </article>
+      
+      <article class="chapter-row">
+        <div class="chapter-thumb">
+          <img src="images/saga-ashen-blade.jpg" alt="Chapter thumbnail">
+        </div>
+        <div class="chapter-info">
+          <div class="chapter-saga">
+            <img src="images/logo-crest.png" alt="">
+            <span>The Ashen Blade</span>
+          </div>
+          <h4 class="chapter-title">Chapter 1: The Forging</h4>
+          <div class="chapter-meta">
+            <span class="duration">4:12</span>
+            <span class="free">Free</span>
+          </div>
+        </div>
+        <button class="btn-play">
+          <svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+        </button>
+      </article>
+    </section>
+  </div>
+</body>
+</html>
