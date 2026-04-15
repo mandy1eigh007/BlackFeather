@@ -192,7 +192,7 @@ export function validateScene(config: SceneConfig): StoryValidationResult[] {
   const results: StoryValidationResult[] = [];
   
   // Check dominant purpose
-  if (!SCENE_RULES.dominantPurposes.includes(config.dominantPurpose)) {
+  if (!(SCENE_RULES.dominantPurposes as readonly string[]).includes(config.dominantPurpose)) {
     results.push({
       ruleId: 'scene-purpose',
       category: 'scene',

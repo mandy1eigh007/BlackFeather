@@ -239,7 +239,8 @@ export function validateComponent(config: ComponentConfig): ValidationResult[] {
  */
 export function validateLayout(config: LayoutConfig): ValidationResult[] {
   const results: ValidationResult[] = [];
-  const rules = LAYOUT_RULES[config.type] || LAYOUT_RULES.page;
+  const layoutKey = config.type === 'section' ? 'sections' : config.type;
+  const rules = LAYOUT_RULES[layoutKey] || LAYOUT_RULES.page;
   
   // === HERO VALIDATION ===
   if (config.type === 'hero') {
@@ -270,7 +271,7 @@ export function validateLayout(config: LayoutConfig): ValidationResult[] {
   
   // === Z-INDEX VALIDATION ===
   if (config.zIndexValues) {
-    const validZIndexes = Object.values(LAYOUT_RULES.zIndex).flat();
+    const validZIndexes: number[] = Object.values(LAYOUT_RULES.zIndex).flat() as number[];
     for (const z of config.zIndexValues) {
       if (typeof z === 'number' && !validZIndexes.includes(z)) {
         results.push({
@@ -379,7 +380,7 @@ export function validateMotionBudget(
   if (budget) {
     const types = animations.map(a => a.type);
     for (const type of types) {
-      if (!budget.includes(type)) {
+      if (!(budget as readonly string[]).includes(type)) {
         results.push({
           ruleId: 'motion-section-budget',
           category: 'motion',
@@ -409,7 +410,7 @@ export function validateMotionBudget(
   
   // Check for prohibited animation types
   for (const anim of animations) {
-    if (MOTION.prohibited.includes(anim.type)) {
+    if ((MOTION.prohibited as readonly string[]).includes(anim.type)) {
       results.push({
         ruleId: 'motion-prohibited',
         category: 'motion',
@@ -491,7 +492,7 @@ export function validateAssetReadability(
   
   // Check contrast ratio for logos
   if (contrastRatio !== undefined) {
-    let requiredContrast = READABILITY_RULES.contrast.decorative;
+    let requiredContrast: number = READABILITY_RULES.contrast.decorative;
     
     if (metadata.role === 'primary-logo' || metadata.role === 'logo-with-text') {
       requiredContrast = READABILITY_RULES.contrast.logo;
@@ -673,7 +674,7 @@ export function validateVisualDensity(
   
   // Check overlay stacking
   const overlayCount = elements.filter(e => 
-    VISUAL_DENSITY_RULES.highDetail.includes(e.type) && 
+    (VISUAL_DENSITY_RULES.highDetail as readonly string[]).includes(e.type) && 
     e.type.includes('overlay')
   ).length;
   

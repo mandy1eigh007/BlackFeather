@@ -134,12 +134,12 @@ export function canUseAssetInContext(
  */
 export function getLogoForContext(context: string): string {
   // Check if context requires clean crest
-  if (LOGO_USAGE.cleanCrest.contexts.includes(context)) {
+  if ((LOGO_USAGE.cleanCrest.contexts as readonly string[]).includes(context)) {
     return LOGO_USAGE.cleanCrest.asset;
   }
   
   // Check if context allows hero variant
-  if (LOGO_USAGE.heroVariant.contexts.includes(context)) {
+  if ((LOGO_USAGE.heroVariant.contexts as readonly string[]).includes(context)) {
     return LOGO_USAGE.heroVariant.asset;
   }
   
